@@ -5,8 +5,15 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
+import android.util.Log;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+
+import com.appsthergo.instytul.tabs.appsthergoappname.R;
+import com.appsthergo.instytul.tabs.appsthergoappname.listanoticias.ItemNoticia;
+
+import libreria.sistema.App;
 
 /**
  * Created by Jhon on 26/03/2015.
@@ -17,6 +24,7 @@ public class CargarImagen extends AsyncTask<String, Void, Bitmap> {
     private ViewGroup viewGroup;
     private ImageView imagen;
     private Context contexto;
+    private boolean ajustar=false;
 
     /**
      * Carga una imagen traida de una URL
@@ -47,6 +55,11 @@ public class CargarImagen extends AsyncTask<String, Void, Bitmap> {
     }
 
 
+    public void setAjustar(boolean ajustar){
+        this.ajustar=ajustar;
+    }
+
+
     @Override
     protected void onPreExecute() {
         // TODO Auto-generated method stub
@@ -55,6 +68,7 @@ public class CargarImagen extends AsyncTask<String, Void, Bitmap> {
 
     @Override
     protected Bitmap doInBackground(String... params) {
+
         Bitmap imagen = Conexion.descargarImagen(this.URL);
         return imagen;
     }
@@ -65,12 +79,22 @@ public class CargarImagen extends AsyncTask<String, Void, Bitmap> {
 
         Drawable img = new BitmapDrawable(contexto.getResources(), result);
 
-        if(imagen==null)
+
+        if(viewGroup!=null)
             viewGroup.setBackground(img);
 
 
-        if(viewGroup==null)
+        if(imagen!=null) {
             imagen.setBackground(img);
+            if(ajustar) {
+                LinearLayout parent = (LinearLayout) imagen.getParent();
+                imagen.getLayoutParams().width = Math.round((App.W_IMAGEN_NOTICIA * parent.getHeight()) / App.H_IMAGEN_NOTICIA);
+                imagen.requestLayout();
+                if (this.URL == null)
+                    imagen.setImageResource(R.mipmap.img_menu_btn_2);
+            }
+        }
+
 
     }
 

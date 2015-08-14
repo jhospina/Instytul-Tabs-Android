@@ -5,7 +5,7 @@ package libreria.sistema;
  */
 public class AppConfig {
 
-    public static String keyApp = "B5QT17FTFNWIDUC25U4ZN68YPHB1G3SHV02K685JQIMLC567"; // Indica la llave unica de identificación de la aplicacion
+    public static String keyApp = "PUVWM41DKFLN1NIXYLNLFLKZOUMADTISC5EOW6R83J1FRM54Z"; // Indica la llave unica de identificación de la aplicacion
 
     /**
      * *******************************************************
@@ -21,14 +21,14 @@ public class AppConfig {
     public static String txt_modulo_noticias = "Noticias";
     public static String txt_modulo_encuestas = "Encuestas";
     public static String txt_modulo_pqr = "PQRS";
-    public static String txt_modulo_institucional_colorFondo = "#FFFFFF";
-    public static String txt_modulo_noticias_colorFondo = "#FFFFFF";
-    public static String txt_modulo_encuestas_colorFondo = "#FFFFFF";
-    public static String txt_modulo_pqr_colorFondo = "#FFFFFF";
-    public static String txt_modulo_institucional_colorTexto = "#000000";
-    public static String txt_modulo_noticias_colorTexto = "#000000";
-    public static String txt_modulo_encuestas_colorTexto = "#000000";
-    public static String txt_modulo_pqr_colorTexto = "#000000";
+    public static String modulo_institucional_colorFondo = "#FFFFFF";
+    public static String modulo_noticias_colorFondo = "#FFFFFF";
+    public static String modulo_encuestas_colorFondo = "#FFFFFF";
+    public static String modulo_pqr_colorFondo = "#FFFFFF";
+    public static String modulo_institucional_colorTexto = "#000000";
+    public static String modulo_noticias_colorTexto = "#000000";
+    public static String modulo_encuestas_colorTexto = "#000000";
+    public static String modulo_pqr_colorTexto = "#000000";
     public static boolean modulo_institucional=true;
     public static boolean modulo_noticias=true;
     public static boolean modulo_encuestas=true;

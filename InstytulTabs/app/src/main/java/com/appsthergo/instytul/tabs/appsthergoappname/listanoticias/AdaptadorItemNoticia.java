@@ -1,8 +1,11 @@
 package com.appsthergo.instytul.tabs.appsthergoappname.listanoticias;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,14 +14,19 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import com.appsthergo.instytul.tabs.appsthergoappname.R;
 
+import libreria.conexion.CargarImagen;
+import libreria.sistema.App;
+
 public class AdaptadorItemNoticia extends BaseAdapter {
 
     private Context context;
     private List<ItemNoticia> items;
+    private ArrayList id_imagenes;
 
     public AdaptadorItemNoticia(Context context, List<ItemNoticia> items) {
         this.context = context;
         this.items = items;
+        id_imagenes=new ArrayList();
     }
 
     @Override
@@ -36,6 +44,11 @@ public class AdaptadorItemNoticia extends BaseAdapter {
         return position;
     }
 
+    public int getIdImagen(int position){
+        return id_imagenes.size();
+       // return (int)id_imagenes.get(position);
+    }
+
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
@@ -49,12 +62,15 @@ public class AdaptadorItemNoticia extends BaseAdapter {
         }
 
         // Set data into the view.
-        ImageView ivItem = (ImageView) rowView.findViewById(R.id.listaNoticias_imagen);
-        TextView tvTitle = (TextView) rowView.findViewById(R.id.listaNoticias_titulo);
+        ImageView imagen = (ImageView) rowView.findViewById(R.id.listaNoticias_imagen);
+        TextView titulo = (TextView) rowView.findViewById(R.id.listaNoticias_titulo);
 
         ItemNoticia item = this.items.get(position);
-        tvTitle.setText(item.getTitle());
-        ivItem.setImageResource(item.getImage());
+        titulo.setText(item.getTitle());
+        titulo.setTextColor(Color.parseColor(App.modulo_noticias_colorTexto));
+        CargarImagen cargar=new CargarImagen(context,item.getUrl_imagen(),imagen);
+        cargar.setAjustar(true);
+        cargar.execute();
 
         return rowView;
     }

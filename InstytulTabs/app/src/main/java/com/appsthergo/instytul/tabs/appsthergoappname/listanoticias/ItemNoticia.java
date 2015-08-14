@@ -5,27 +5,27 @@ package com.appsthergo.instytul.tabs.appsthergoappname.listanoticias;
  */
 public class ItemNoticia {
 
-        private int image;
+        private String url_imagen;
         private String title;
-        private String url;
+        private int id_noticia;
 
         public ItemNoticia() {
             super();
         }
 
-        public ItemNoticia(int image, String title, String url) {
+        public ItemNoticia(int id_noticia, String title,String image) {
             super();
-            this.image = image;
+            this.id_noticia=id_noticia;
+            this.url_imagen = image;
             this.title = title;
-            this.url = url;
         }
 
-        public int getImage() {
-            return image;
+        public String getUrl_imagen() {
+            return url_imagen;
         }
 
-        public void setImage(int image) {
-            this.image = image;
+        public void setUrl_imagen(String url_imagen) {
+            this.url_imagen = url_imagen;
         }
 
         public String getTitle() {
@@ -36,12 +36,11 @@ public class ItemNoticia {
             this.title = title;
         }
 
-        public String getUrl() {
-            return url;
-        }
+    public int getId_noticia() {
+        return id_noticia;
+    }
 
-        public void setUrl(String url) {
-            this.url = url;
-        }
-
+    public void setId_noticia(int id_noticia) {
+        this.id_noticia = id_noticia;
+    }
 }

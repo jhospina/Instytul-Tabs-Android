@@ -38,7 +38,7 @@ public class App extends AppConfig {
 
     //****NOTICIAS*****//
     public static boolean noticias_descargadas = false; //Indica si las noticias ya fueron descargadas
-    public static int noticias_cantidad_a_cargar = 16;//Indica el numero de noticias a cargar
+    public static int noticias_cantidad_a_cargar = 8;//Indica el numero de noticias a cargar
     public static int noticias_cargadas = 0;
     //****INSTITUCIONAL*****//
     public static boolean institucional_descargadas = false; //Indica si la informacion institucional ya fueron descargadas

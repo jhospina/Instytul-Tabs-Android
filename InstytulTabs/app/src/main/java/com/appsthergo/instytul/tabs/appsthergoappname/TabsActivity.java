@@ -10,17 +10,15 @@ import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TabHost;
 
-import com.appsthergo.instytul.tabs.appsthergoappname.listanoticias.AdaptadorItemNoticia;
-import com.appsthergo.instytul.tabs.appsthergoappname.listanoticias.ItemNoticia;
+import com.appsthergo.instytul.tabs.appsthergoappname.frames.FrameNoticias;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import libreria.complementos.Util;
+import libreria.conexion.Conexion;
 import libreria.sistema.App;
 import libreria.sistema.AppConfig;
+import libreria.sistema.AppMeta;
 
 
 public class TabsActivity extends ActionBarActivity {
@@ -35,14 +33,15 @@ public class TabsActivity extends ActionBarActivity {
         establecerApariencia();
 
         tabNoticias();
+        registrarInstalacion();
     }
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     private void establecerApariencia() {
-        ((LinearLayout) findViewById(R.id.tabNoticias)).setBackground(new ColorDrawable(Color.parseColor(AppConfig.txt_modulo_noticias_colorFondo)));
-        ((LinearLayout) findViewById(R.id.tabInstitucional)).setBackground(new ColorDrawable(Color.parseColor(AppConfig.txt_modulo_institucional_colorFondo)));
-        ((LinearLayout) findViewById(R.id.tabEncuestas)).setBackground(new ColorDrawable(Color.parseColor(AppConfig.txt_modulo_encuestas_colorFondo)));
-        ((LinearLayout) findViewById(R.id.tabPqr)).setBackground(new ColorDrawable(Color.parseColor(AppConfig.txt_modulo_pqr_colorFondo)));
+        ((LinearLayout) findViewById(R.id.tabNoticias)).setBackground(new ColorDrawable(Color.parseColor(AppConfig.modulo_noticias_colorFondo)));
+        ((LinearLayout) findViewById(R.id.tabInstitucional)).setBackground(new ColorDrawable(Color.parseColor(AppConfig.modulo_institucional_colorFondo)));
+        ((LinearLayout) findViewById(R.id.tabEncuestas)).setBackground(new ColorDrawable(Color.parseColor(AppConfig.modulo_encuestas_colorFondo)));
+        ((LinearLayout) findViewById(R.id.tabPqr)).setBackground(new ColorDrawable(Color.parseColor(AppConfig.modulo_pqr_colorFondo)));
     }
 
 
@@ -81,8 +80,10 @@ public class TabsActivity extends ActionBarActivity {
         tabs.setOnTabChangedListener(new TabHost.OnTabChangeListener() {
             @Override
             public void onTabChanged(String tabId) {
-                if (tabId == "tab1")
+                if (tabId == "tab1") {
                     App.establecerBarraAccion(TabsActivity.this, AppConfig.txt_modulo_noticias);
+                    tabNoticias();
+                }
                 if (tabId == "tab2")
                     App.establecerBarraAccion(TabsActivity.this, AppConfig.txt_modulo_institucional);
                 if (tabId == "tab3")
@@ -93,36 +94,18 @@ public class TabsActivity extends ActionBarActivity {
         });
 
 
-        // tabs.getTabWidget().getChildAt(0).setBackgroundColor(Color.parseColor(AppConfig.txt_modulo_noticias_colorFondo));
-        // tabs.getTabWidget().getChildAt(1).setBackgroundColor(Color.parseColor(AppConfig.txt_modulo_institucional_colorFondo));
-        // tabs.getTabWidget().getChildAt(2).setBackgroundColor(Color.parseColor(AppConfig.txt_modulo_encuestas_colorFondo));
-        // tabs.getTabWidget().getChildAt(3).setBackgroundColor(Color.parseColor(AppConfig.txt_modulo_pqr_colorFondo));
+        // tabs.getTabWidget().getChildAt(0).setBackgroundColor(Color.parseColor(AppConfig.modulo_noticias_colorFondo));
+        // tabs.getTabWidget().getChildAt(1).setBackgroundColor(Color.parseColor(AppConfig.modulo_institucional_colorFondo));
+        // tabs.getTabWidget().getChildAt(2).setBackgroundColor(Color.parseColor(AppConfig.modulo_encuestas_colorFondo));
+        // tabs.getTabWidget().getChildAt(3).setBackgroundColor(Color.parseColor(AppConfig.modulo_pqr_colorFondo));
     }
 
 
 
 
     private void tabNoticias(){
-        ListView listaNoticias = (ListView) findViewById(R.id.listView_noticias);
-
-        List items = new ArrayList();
-        items.add(new ItemNoticia(R.mipmap.img_menu_btn_1, "Following",
-                "http://www.imdb.com/title/tt0154506/"));
-        items.add(new ItemNoticia(R.mipmap.img_menu_btn_1, "Memento",
-                "http://www.imdb.com/title/tt0209144/"));
-        items.add(new ItemNoticia(R.mipmap.img_menu_btn_1, "Batman Begins",
-                "http://www.imdb.com/title/tt0372784/"));
-        items.add(new ItemNoticia(R.mipmap.img_menu_btn_1, "The Prestige",
-                "http://www.imdb.com/title/tt0482571/"));
-        items.add(new ItemNoticia(R.mipmap.img_menu_btn_1, "The Dark Knight",
-                "http://www.imdb.com/title/tt0468569/"));
-        items.add(new ItemNoticia(R.mipmap.img_menu_btn_1, "Inception",
-                "http://www.imdb.com/title/tt1375666/"));
-        items.add(new ItemNoticia(R.mipmap.img_menu_btn_1,
-                "The Dark Knight Rises", "http://www.imdb.com/title/tt1345836/"));
-
-        // Sets the data behind this ListView
-        listaNoticias.setAdapter(new AdaptadorItemNoticia(this, items));
+        FrameNoticias frameNoticias=new FrameNoticias(this,R.id.tabNoticias);
+        frameNoticias.iniciar();
     }
 
 
@@ -131,8 +114,34 @@ public class TabsActivity extends ActionBarActivity {
 
 
 
+    private void registrarInstalacion(){
 
+        if(!Conexion.verificar(this))
+            return;
 
+        String regInstalacion="instalacion_"+App.obtenerIdDispositivo(this);
+
+        if(AppMeta.findByClave(this, regInstalacion)!=null)
+            return;
+
+        String fecha= Util.obtenerFechaActual();;
+
+        AppMeta meta=new AppMeta(this);
+
+        meta.setClave(regInstalacion);
+        meta.setValor(fecha);
+        meta.save();
+
+        String[][] datos = new String[3][2];
+        datos[0][0] = "key_app";
+        datos[0][1] = App.keyApp;
+        datos[1][0] = "clave";
+        datos[1][1] = regInstalacion;
+        datos[2][0] = "valor";
+        datos[2][1] =  fecha;
+
+        Conexion.conectar(App.URL_META_REGISTRAR, datos);
+    }
 
 
 
